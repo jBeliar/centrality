@@ -78,20 +78,17 @@ class Launcher extends React.Component {
     this.prepareWindowHeight()
   }
 
-  selectFirst() {
-    this.setState({selected: 0, selectedTail: []})
-  }
-
   getSlicedList(list, pageLimit) {
     return pageLimit === '*' ? list : list.slice(0, pageLimit)
   }
 
   async setList(items) {
     const list = items || await this.cContext.getList()
-    this.selectFirst()
     this.setState({
       totalNumber: list.length,
-      list: this.getSlicedList(list, this.props.pageLimit)
+      list: this.getSlicedList(list, this.props.pageLimit),
+      selected: 0,
+      selectedTail: []
     })
   }
 

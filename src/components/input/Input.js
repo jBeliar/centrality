@@ -32,7 +32,6 @@ class CentralityInput extends React.Component {
     return (
       <div className="input-container">
         <input autoFocus
-          
           disabled={this.props.loading}
           ref={ref => this.inputRef = ref}
           value={this.props.inputValue}
