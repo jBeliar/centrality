@@ -24,7 +24,7 @@ module.exports = {
 
   getContext(query) {
     const trimmedQuery = removeSpaces(query)
-    const exceptionContext = this.checkInternalExceptions(trimmedQuery)
+    const exceptionContext = this.checkInternalCommands(trimmedQuery)
     if (exceptionContext) {
       return ensurePluginContextFormat(exceptionContext)
     }
@@ -49,16 +49,17 @@ module.exports = {
     }
   },
 
-  checkInternalExceptions(query) {
+  checkInternalCommands(query) {
     switch (query) {
       case 'reinit':
       case 'ri':
         return {
-          preview: () => 'Reinit plugins',
+          name: 'Reinit plugins',
           onEnter: async (_, setInput) => { setInput(''); return this.initPlugins() }
         }
       case 'rl':
         return {
+          name: 'Reload app',
           onEnter: async (_, setInput) => reload()
         }
       case '?':
