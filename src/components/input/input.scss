@@ -17,8 +17,6 @@
   font-size: 1.5em;
   padding: 0 5px;
   box-sizing: border-box;
-  // -webkit-user-select: none;
-  // -webkit-app-region: drag;
 }
 
 .total-number {
@@ -39,4 +37,6 @@
   background-color: $context-color;
   box-sizing: border-box;
   padding-left: 15px;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
 }

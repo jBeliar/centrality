@@ -23,7 +23,6 @@ const settings = {
   skipTaskbar: true,
   closable: false,
   minimizable: false,
-  movable: false,
   title: "Centrality",
   transparent: true,
   backgroundColor: '#00000000',
