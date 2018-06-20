@@ -1,0 +1,53 @@
+@import '../../assets/css/variables.scss';
+
+.list-item {
+  @include center-text-vertical;
+  background-color: $font-color;
+  border-bottom: 1px solid $context-color;
+  color: $input-color;
+  height: $item-height;
+  padding-left: 2px;
+  
+  .list-item__name {
+    font-weight: bold;
+    font-size: 15px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .list-item__path {
+    font-size: 12px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .list-item__info {
+    padding-left: 5px;
+    flex: 1;
+    overflow: hidden;
+  }
+  .list-item__addition {
+    max-width: 120px;
+  }
+}
+
+.list-item > img {
+  max-height: $item-height;
+}
+
+.selected {
+  background-color: $context-color;
+  color: $font-color;
+}
+
+.selected-in-area {
+  background-color: $selected-area-color;
+  color: $font-color;
+}
+
+.list-item--small {
+  height: 25px!important;
+  & > img {
+    max-height: 25px!important;
+  }
+}

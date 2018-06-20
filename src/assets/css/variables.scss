@@ -1,0 +1,15 @@
+$input-color: #252728;
+$context-color: #383b3c;
+$selected-area-color: #4e5255;
+$font-color: #9B9D9F;
+
+$input-height: 35px;
+$list-height: 360px;
+$preview-height: 510px;
+$item-height: 35px;
+
+@mixin center-text-vertical {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

@@ -1,0 +1,52 @@
+@import '../../assets/css/variables.scss';
+
+.launcher-container {
+  background-color: $input-color;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  border: solid 2px $context-color;
+  border-radius: 5px;
+}
+
+.result-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.list-container {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: $list-height;
+}
+
+.preview-container {
+  background-color: $font-color;
+  flex: 1;
+  padding: 5px;
+  word-break: break-all;
+  overflow-y: auto;
+  max-height: $preview-height;
+}
+
+.loader-background {
+	background: linear-gradient(-90deg, #383b3c, #252728, #383b3c, #252728, #383b3c);
+	background-size: 400% 400%;
+	animation: Gradient 1s ease infinite;
+}
+
+@keyframes Gradient {
+	0% {
+    background-position: 0% 50%;
+	}
+	50% {
+    background-position: 100% 50%;
+	}
+	100% {
+    background-position: 0% 50%;
+	}
+}

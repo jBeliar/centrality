@@ -1,0 +1,11 @@
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  .title {
+    text-align: center;
+    font-size: 55px;
+    color: #3e4143;
+  }
+}
