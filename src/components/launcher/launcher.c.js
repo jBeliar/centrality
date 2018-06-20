@@ -26,7 +26,8 @@ class Launcher extends React.Component {
       preview: '',
       list: [],
       selected: 0,
-      selectedTail: []
+      selectedTail: [],
+      inputValue: ''
     }
     this.lastBodyHeight = 0
     this.isFullscreen = false
@@ -68,7 +69,7 @@ class Launcher extends React.Component {
     const oldContextName = this.state.pluginName
     this.cContext = context
     
-    this.setState({pluginName: context.name})
+    this.setState({pluginName: context.name, inputValue: query})
     await this.setList()
 
     if (this.state.totalNumber > 0 || oldContextName !== this.cContext.name) {
@@ -196,8 +197,12 @@ class Launcher extends React.Component {
     }
   }
 
+  setInputValue(value) {
+    this.setState({inputValue: value})
+  }
+
   onEnterAction(item) {
-    return this.cContext.onEnter(item, query => this.onChangeQuery(query), () => hideWindow())
+    return this.cContext.onEnter(item, query => this.setInputValue(query), () => hideWindow())
   }
 
   asyncLoading(maybyPromise, thenCallback) {
@@ -243,8 +248,6 @@ class Launcher extends React.Component {
     }, false)
   }
 
- 
-
   render() {
     return (
     <div className={"launcher-container" + (this.state.loading?' loader-background':'')}>
@@ -255,6 +258,7 @@ class Launcher extends React.Component {
         totalNumber={this.state.totalNumber}
         pluginName={this.state.pluginName}
         isPreview={!!this.state.preview}
+        inputValue={this.state.inputValue}
         ref={ref => this.inputRef = ref&&ref.inputRef}
       />
       <div className="result-container">

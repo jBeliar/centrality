@@ -35,6 +35,7 @@ class CentralityInput extends React.Component {
           
           disabled={this.props.loading}
           ref={ref => this.inputRef = ref}
+          value={this.props.inputValue}
           onChange={event => this.props.onChangeQuery(event.target.value)}
           className="launcher-input"/>
         <If cond={!!this.props.totalNumber && !this.props.isPreview}>
