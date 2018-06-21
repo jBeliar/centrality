@@ -27,7 +27,8 @@ class Launcher extends React.Component {
       list: [],
       selected: 0,
       selectedTail: [],
-      inputValue: ''
+      inputValue: '',
+      listLoading: false
     }
     this.lastBodyHeight = 0
     this.isFullscreen = false
@@ -69,7 +70,7 @@ class Launcher extends React.Component {
     const oldContextName = this.state.pluginName
     this.cContext = context
     
-    this.setState({pluginName: context.name, inputValue: query})
+    this.setState({pluginName: context.name, inputValue: query, listLoading: true})
     await this.setList()
 
     if (this.state.totalNumber > 0 || oldContextName !== this.cContext.name) {
@@ -88,7 +89,8 @@ class Launcher extends React.Component {
       totalNumber: list.length,
       list: this.getSlicedList(list, this.props.pageLimit),
       selected: 0,
-      selectedTail: []
+      selectedTail: [],
+      listLoading: false
     })
   }
 
@@ -247,7 +249,7 @@ class Launcher extends React.Component {
 
   render() {
     return (
-    <div className={"launcher-container" + (this.state.loading?' loader-background':'')}>
+    <div className={"launcher-container" + ((this.state.loading||this.state.listLoading)?' loader-background':'')}>
 
       <CentralityInput
         onChangeQuery={query => this.onChangeQuery(query)}
