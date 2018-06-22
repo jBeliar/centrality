@@ -198,12 +198,8 @@ class Launcher extends React.Component {
     }
   }
 
-  setInputValue(value) {
-    this.setState({inputValue: value})
-  }
-
   onEnterAction(item) {
-    return this.cContext.onEnter(item, query => this.setInputValue(query), () => hideWindow())
+    return this.cContext.onEnter(item, query => this.onChangeQuery(query), () => hideWindow())
   }
 
   asyncLoading(maybyPromise, thenCallback) {
