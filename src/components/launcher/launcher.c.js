@@ -85,13 +85,15 @@ class Launcher extends React.Component {
 
   async setList(items) {
     const list = items || await this.cContext.getList()
-    this.setState({
-      totalNumber: list.length,
-      list: this.getSlicedList(list, this.props.pageLimit),
-      selected: 0,
-      selectedTail: [],
-      listLoading: false
-    })
+    if (this.state.listLoading || items) {
+      this.setState({
+        totalNumber: list.length,
+        list: this.getSlicedList(list, this.props.pageLimit),
+        selected: 0,
+        selectedTail: [],
+        listLoading: false
+      })
+    }
   }
 
   async setPreview() {
