@@ -1,5 +1,5 @@
 'use strict';
-const { app, BrowserWindow, ipcMain, globalShortcut, protocol } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, protocol, shell } = require('electron');
 const path = require('path')
 const url = require('url')
 
@@ -62,6 +62,13 @@ function createWindow() {
     mainWindow = null;
   });
   mainWindow.on('blur', () => mainWindow.hide());
+  mainWindow.webContents.on('new-window', handleRedirect);
+  mainWindow.webContents.on('will-navigate', handleRedirect);
+}
+
+function handleRedirect(event, url) {
+  event.preventDefault()
+  shell.openExternal(url)
 }
 
 ipcMain.on('centrality-register-shortcut', (event, shortcut) => {
