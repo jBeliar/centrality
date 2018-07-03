@@ -1,5 +1,5 @@
 import { shell, clipboard } from 'electron'
-import { groupBy } from 'lodash';
+import groupBy from 'lodash/groupBy';
 import { loadJsonAsync } from '../utils/file-utils';
 
 const selectedFontColor = 'green'

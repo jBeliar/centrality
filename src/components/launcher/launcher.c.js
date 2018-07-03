@@ -32,6 +32,7 @@ class Launcher extends React.Component {
     }
     this.lastBodyHeight = 0
     this.isFullscreen = false
+    this.selectedLinkIndex = -1
 
     this.initPlugins = this.initPlugins.bind(this)
   }
@@ -66,6 +67,7 @@ class Launcher extends React.Component {
   }
 
   async onChangeQuery(query = '') {
+    this.selectedLinkIndex = -1
     const context = searchService.getContext(query)
     const oldContextName = this.state.pluginName
     this.cContext = context
@@ -113,23 +115,43 @@ class Launcher extends React.Component {
       }
     })
   }
+
+  focusLinkOnPreview(d) {
+    const links = document.getElementsByClassName('preview-container')[0].querySelectorAll('a');
+    if (links.length === 0) {
+      return
+    }
+    const newIndex = this.selectedLinkIndex + d
+    if ( (d > 0 && newIndex < links.length) || (d < 0 && newIndex > -1) ) {
+      this.selectedLinkIndex = newIndex
+      links[this.selectedLinkIndex].focus()
+    }
+  }
   
   selectNext(e) {
-    let newState = {selectedTail: []}
     this.stopEvent(e)
-    if(this.state.selected + 1 < this.state.list.length) {
-      newState = {...newState, selected: this.state.selected + 1}
+    if (this.state.preview) {
+      this.focusLinkOnPreview(1)
+    } else {
+      let newState = {selectedTail: []}
+      if(this.state.selected + 1 < this.state.list.length) {
+        newState = {...newState, selected: this.state.selected + 1}
+      }
+      this.setState(newState)
     }
-    this.setState(newState)
   }
   
   selectPrevious(e) {
-    let newState = {selectedTail: []}
     this.stopEvent(e)
-    if(this.state.selected > 0) {
-      newState = {...newState, selected: this.state.selected - 1}
+    if (this.state.preview) {
+      this.focusLinkOnPreview(-1)
+    } else {
+      let newState = {selectedTail: []}
+      if(this.state.selected > 0) {
+        newState = {...newState, selected: this.state.selected - 1}
+      }
+      this.setState(newState)
     }
-    this.setState(newState)
   }
 
   selectNextInGroup(e) {
@@ -232,7 +254,6 @@ class Launcher extends React.Component {
     Mousetrap(launcherContainer).bind('shfit+J',   $event => this.selectNext($event))
     Mousetrap(launcherContainer).bind('shfit+T',   $event => this.openDevTools($event))
     Mousetrap(launcherContainer).bind('shfit+K',   $event => this.selectPrevious($event))
-    Mousetrap(launcherContainer).bind('enter',     $event => this.onEnter(),                    'keydown')
     Mousetrap(launcherContainer).bind('ctrl+w',    $event => this.closeAction(),                'keydown')
     Mousetrap(launcherContainer).bind('f11',       $event => this.toggleFullscreen(),           'keydown')
     Mousetrap(launcherContainer).bind('shift+j',   $event => this.selectNextInGroup($event))
@@ -247,36 +268,36 @@ class Launcher extends React.Component {
 
   render() {
     return (
-    <div className={"launcher-container" + ((this.state.loading||this.state.listLoading)?' loader-background':'')}>
-
-      <CentralityInput
-        onChangeQuery={query => this.onChangeQuery(query)}
-        loading={this.state.loading}
-        totalNumber={this.state.totalNumber}
-        pluginName={this.state.pluginName}
-        isPreview={!!this.state.preview}
-        inputValue={this.state.inputValue}
-        ref={ref => this.inputRef = ref&&ref.inputRef}
-      />
-      <div className="result-container">
-        <If cond={!this.state.preview}>
-          <div className="list-container">
-            <For list={this.state.list} fn={(item, i) => (
-              <CentralityListItem
-                key={i}
-                item={item}
-                selected={i === this.state.selected}
-                tailSelected={this.state.selectedTail.includes(i)}/>
-            )}/>
-          </div>
-        </If>
-        <If cond={this.state.preview}>
-          <div className="preview-container"
-            dangerouslySetInnerHTML={{__html: this.state.preview}}
-          ></div>
-        </If>
+      <div className={"launcher-container" + ((this.state.loading||this.state.listLoading)?' loader-background':'')}>
+        <CentralityInput
+          onChangeQuery={query => this.onChangeQuery(query)}
+          onEnter={() => this.onEnter()}
+          loading={this.state.loading}
+          totalNumber={this.state.totalNumber}
+          pluginName={this.state.pluginName}
+          isPreview={!!this.state.preview}
+          inputValue={this.state.inputValue}
+          ref={ref => this.inputRef = ref&&ref.inputRef}
+        />
+        <div className="result-container">
+          <If cond={!this.state.preview}>
+            <div className="list-container">
+              <For list={this.state.list} fn={(item, i) => (
+                <CentralityListItem
+                  key={i}
+                  item={item}
+                  selected={i === this.state.selected}
+                  tailSelected={this.state.selectedTail.includes(i)}/>
+              )}/>
+            </div>
+          </If>
+          <If cond={this.state.preview}>
+            <div className="preview-container"
+              dangerouslySetInnerHTML={{__html: this.state.preview}}
+            ></div>
+          </If>
+        </div>
       </div>
-    </div>
     );
   }
 }

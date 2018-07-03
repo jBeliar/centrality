@@ -39,6 +39,14 @@
 	animation: Gradient 1s ease infinite;
 }
 
+a:focus {
+  border-left: black solid 10px;
+  border-right: black solid 1px;
+  border-top: black solid 1px;
+  border-bottom: black solid 1px;
+  outline: none;
+}
+
 @keyframes Gradient {
 	0% {
     background-position: 0% 50%;

@@ -1,5 +1,6 @@
 import { parse, join } from 'path'
-import { uniqBy, last } from 'lodash'
+import uniqBy from 'lodash/uniqBy'
+import last from 'lodash/last'
 import { remote, shell } from 'electron'
 
 import {

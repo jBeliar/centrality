@@ -21,6 +21,7 @@ class CentralityInput extends React.Component {
     const launcherInput = document.getElementsByClassName('launcher-input')[0]
     Mousetrap(launcherInput).bind('tab',       $event => this.stopEvent($event), 'keydown')
     Mousetrap(launcherInput).bind('shift+tab', $event => this.stopEvent($event), 'keydown')
+    Mousetrap(launcherInput).bind('enter',     $event => this.props.onEnter(),  'keydown')
   }
 
   stopEvent(e) {
