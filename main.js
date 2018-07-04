@@ -81,8 +81,11 @@ ipcMain.on('centrality-register-shortcut', (event, shortcut) => {
 })
 
 ipcMain.on('centrality-reload', (event, args) => {
-  mainWindow.setSize(700, 350)
   mainWindow.reload()
+  mainWindow.setSize(700, 350)
+  mainWindow.center()
+  const x = mainWindow.getPosition()[0]
+  mainWindow.setPosition(x, 100)
 })
 
 ipcMain.on('centrality-hide', (event, args) => {
@@ -90,7 +93,7 @@ ipcMain.on('centrality-hide', (event, args) => {
 })
 
 ipcMain.on('centrality-show', (event, args) => {
-  show()
+  mainWindow.show()
 })
 
 function setGlobalShortcut(shortcut) {
@@ -98,7 +101,7 @@ function setGlobalShortcut(shortcut) {
     if (mainWindow.isVisible()) {
       hide()
     } else {
-      show()
+      mainWindow.show()
     }
   })
 }
@@ -106,10 +109,6 @@ function setGlobalShortcut(shortcut) {
 function hide() {
   mainWindow.blur()
   mainWindow.hide()
-}
-
-function show() {
-  mainWindow.show()
 }
 
 app.on('ready', () => {

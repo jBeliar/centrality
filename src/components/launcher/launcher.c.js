@@ -28,10 +28,10 @@ class Launcher extends React.Component {
       selected: 0,
       selectedTail: [],
       inputValue: '',
-      listLoading: false
+      listLoading: false,
+      isFullscreen: false
     }
     this.lastBodyHeight = 0
-    this.isFullscreen = false
     this.selectedLinkIndex = -1
 
     this.initPlugins = this.initPlugins.bind(this)
@@ -58,12 +58,14 @@ class Launcher extends React.Component {
   }
 
   toggleFullscreen() {
-    if (this.isFullscreen) {
+    if (this.state.isFullscreen) {
       setInitPosition()
     } else {
       setFullScreenPosition()
     }
-    this.isFullscreen = !this.isFullscreen
+    this.setState({isFullscreen: !this.state.isFullscreen}, () => {
+      this.prepareWindowHeight()
+    })
   }
 
   async onChangeQuery(query = '') {
@@ -107,6 +109,12 @@ class Launcher extends React.Component {
   }
 
   prepareWindowHeight() {
+    if (this.state.isFullscreen) {
+      setTimeout(() => {
+        this.lastBodyHeight = document.getElementById('root').clientHeight
+      })
+      return
+    }
     setTimeout(() => {
       const clientHeight = document.getElementById('root').clientHeight
       if (clientHeight !== this.lastBodyHeight) {
@@ -266,9 +274,36 @@ class Launcher extends React.Component {
     }, false)
   }
 
+  getLauncherContainerClassNames() {
+    const classes = ['launcher-container']
+    if (this.state.loading || this.state.listLoading) {
+      classes.push('launcher-container--loading')
+    }
+    if (this.state.isFullscreen) {
+      classes.push('launcher-container--fullscreen')
+    }
+    return classes.join(' ')
+  }
+
+  getPreviewContainerClassNames() {
+    const classes = ['preview-container']
+    if (!this.state.isFullscreen) {
+      classes.push('preview-container--no-fullscreen')
+    }
+    return classes.join(' ')
+  }
+
+  getListContainerClassNames() {
+    const classes = ['list-container']
+    if (!this.state.isFullscreen) {
+      classes.push('list-container--no-fullscreen')
+    }
+    return classes.join(' ')
+  }
+
   render() {
     return (
-      <div className={"launcher-container" + ((this.state.loading||this.state.listLoading)?' loader-background':'')}>
+      <div className={this.getLauncherContainerClassNames()}>
         <CentralityInput
           onChangeQuery={query => this.onChangeQuery(query)}
           onEnter={() => this.onEnter()}
@@ -281,7 +316,7 @@ class Launcher extends React.Component {
         />
         <div className="result-container">
           <If cond={!this.state.preview}>
-            <div className="list-container">
+            <div className={this.getListContainerClassNames()}>
               <For list={this.state.list} fn={(item, i) => (
                 <CentralityListItem
                   key={i}
@@ -292,7 +327,7 @@ class Launcher extends React.Component {
             </div>
           </If>
           <If cond={this.state.preview}>
-            <div className="preview-container"
+            <div className={this.getPreviewContainerClassNames()}
               dangerouslySetInnerHTML={{__html: this.state.preview}}
             ></div>
           </If>

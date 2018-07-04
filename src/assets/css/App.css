@@ -4,11 +4,6 @@ html, body {
   overflow-y: hidden;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-}
-
 ::-webkit-scrollbar
 {
 	width: 5px;

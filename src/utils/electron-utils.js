@@ -18,9 +18,10 @@ export const openDevTools = () => {
 
 export const setFullScreenPosition = () => {
   const win = remote.getCurrentWindow()
-  const { width, height, x, y } = remote.screen.getPrimaryDisplay().workArea
-  win.setSize(width, height)
-  win.setPosition(x, y)
+  win.setFullScreen(true)
+  // const { width, height, x, y } = remote.screen.getPrimaryDisplay().workArea
+  // win.setSize(width, height)
+  // win.setPosition(x, y)
 }
 
 export const setNewHeight = height => {
