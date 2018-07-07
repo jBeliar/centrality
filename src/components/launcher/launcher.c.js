@@ -88,12 +88,16 @@ class Launcher extends React.Component {
   }
 
   async setList(items) {
+    let selected = 0
+    if (items) {
+      selected = this.state.selected - (this.state.selected < items.length ? 0 : 1)
+    }
     const list = items || await this.cContext.getList()
     if (this.state.listLoading || items) {
       this.setState({
         totalNumber: list.length,
         list: this.getSlicedList(list, this.props.pageLimit),
-        selected: 0,
+        selected,
         selectedTail: [],
         listLoading: false
       })
