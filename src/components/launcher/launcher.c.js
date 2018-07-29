@@ -33,6 +33,9 @@ class Launcher extends React.Component {
     }
     this.lastBodyHeight = 0
     this.selectedLinkIndex = -1
+    this.delay = 500
+    this.asyncTimer = null
+    this.oldContextName = ''
 
     this.initPlugins = this.initPlugins.bind(this)
   }
@@ -69,18 +72,16 @@ class Launcher extends React.Component {
   }
 
   async onChangeQuery(query = '') {
+    clearTimeout(this.asyncTimer)
     this.selectedLinkIndex = -1
+
     const context = searchService.getContext(query)
-    const oldContextName = this.state.pluginName
+    this.oldContextName = this.state.pluginName
     this.cContext = context
     
-    this.setState({pluginName: context.name, inputValue: query, listLoading: true})
-    await this.setList()
+    this.setState({pluginName: context.name, inputValue: query})
 
-    if (this.state.totalNumber > 0 || oldContextName !== this.cContext.name) {
-      this.setState({preview: ''})
-    }
-    this.prepareWindowHeight()
+    await this.setList()
   }
 
   getSlicedList(list, pageLimit) {
@@ -92,16 +93,31 @@ class Launcher extends React.Component {
     if (items) {
       selected = this.state.selected - (this.state.selected < items.length ? 0 : 1)
     }
-    const list = items || await this.cContext.getList()
-    if (this.state.listLoading || items) {
-      this.setState({
-        totalNumber: list.length,
-        list: this.getSlicedList(list, this.props.pageLimit),
-        selected,
-        selectedTail: [],
-        listLoading: false
-      })
+    
+    const fetchList = async () => {
+      const promisedList = this.cContext.getList()
+      this.setState({listLoading: true})
+      const list = items || await promisedList
+      if (this.state.listLoading || items) {
+        this.setState({
+          totalNumber: list.length,
+          list: this.getSlicedList(list, this.props.pageLimit),
+          selected,
+          selectedTail: [],
+          listLoading: false
+        })
+      }
+  
+      if (this.state.totalNumber > 0 || this.oldContextName !== this.cContext.name) {
+        this.setState({preview: ''})
+      }
+      this.prepareWindowHeight()
     }
+
+    await new Promise(resolve =>
+      this.asyncTimer = setTimeout(() => resolve(fetchList()), this.delay)
+    )
+
   }
 
   async setPreview() {
