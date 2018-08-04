@@ -1,6 +1,7 @@
 import { shell, clipboard } from 'electron'
 import groupBy from 'lodash/groupBy';
 import { loadJsonAsync } from '../utils/file-utils';
+import { escapeHTML } from '../utils/plugin-utils'
 
 const selectedFontColor = 'green'
 
@@ -13,7 +14,7 @@ const addHighlight = (item, query, isInMiddle) => {
   const additional = isInMiddle ? 'g' : ''
   return {
     ...item,
-    viewValue: item.value.replace(new RegExp(escapeStringRegExp(query), 'i' + additional), machted => {
+    viewValue: escapeHTML(item.value).replace(new RegExp(escapeStringRegExp(query), 'i' + additional), machted => {
       return `<span style="color:${selectedFontColor};">${machted}</span>`
     })
   }
@@ -21,7 +22,7 @@ const addHighlight = (item, query, isInMiddle) => {
 const addDistributedHighlight = (item, query) => {
   return {
     ...item,
-    value: item.value.replace(new RegExp(escapeStringRegExp(query).split(' ').join('|'), 'gi'), machted => {
+    viewValue: escapeHTML(item.value).replace(new RegExp(escapeStringRegExp(query).split(' ').join('|'), 'gi'), machted => {
       return `<span style="color:${selectedFontColor};">${machted}</span>`
     })
   }

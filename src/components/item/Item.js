@@ -2,6 +2,7 @@ import React from 'react';
 
 import './item.scss'
 import { If } from '../utils/utils';
+import { escapeHTML } from '../../utils/plugin-utils'
 
 
 class CentralityListItem extends React.Component {
@@ -20,6 +21,10 @@ class CentralityListItem extends React.Component {
     return classess
   }
 
+  renderItemValue(item) {
+    return item.viewValue == undefined ? escapeHTML(item.value) : item.viewValue
+  }
+
   render() {
     return (
       <div
@@ -27,7 +32,7 @@ class CentralityListItem extends React.Component {
       >
       <img src={this.props.item.icon}/>
       <div className="list-item__info">
-        <div className="list-item__name" dangerouslySetInnerHTML={{__html: this.props.item.viewValue||this.props.item.value}}></div>
+        <div className="list-item__name" dangerouslySetInnerHTML={{__html: this.renderItemValue(this.props.item)}}></div>
         <div className="list-item__path">{this.props.item.path}</div>
       </div>
       <If cond={this.props.item.addition}>

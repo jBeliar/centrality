@@ -1,5 +1,11 @@
 import { remote } from 'electron'
 
+const htmlspecialchars = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;'
+};
+
 export const ensurePluginContextFormat = partialContext => {
   return {
     name: partialContext.name  || '',
@@ -22,13 +28,17 @@ export const ensurePluginFormat = partialPlugin => {
   }
 }
 
-export const removeSpaces = (query) => {
+export const removeSpaces = query => {
   return query.replace(/\s+/g,' ').trim()
 }
 
-export const splitQuery = (query) => {
+export const splitQuery = query => {
   const [name, ...rest] = query.split(' ')
   return [name, rest.join(' ')]
+}
+
+export const escapeHTML = query => {
+  return query.replace(/[&<>]/g, str => htmlspecialchars[str])
 }
 
 export const getIconFromUrl = async path => {
