@@ -45,7 +45,7 @@ module.exports = {
       getList: () => plugin.queryResults(query),
       onEnter: (item, setInput) => plugin.onEnter(query, item, setInput),
       onClose: (item, setList) => plugin.onClose(query, item, setList),
-      payload: plugin.payload
+      config: plugin.config
     }
   },
 

@@ -1,9 +1,5 @@
 import { remote } from 'electron'
 
-export const pluginPayload = (preview, name, onEnter) => {
-  return { preview, name, onEnter }
-}
-
 export const ensurePluginContextFormat = partialContext => {
   return {
     name: partialContext.name  || '',
@@ -11,7 +7,7 @@ export const ensurePluginContextFormat = partialContext => {
     getList: partialContext.getList || (() => []),
     onEnter: partialContext.onEnter || (() => {}),
     onClose: partialContext.onClose || (() => {}),
-    payload: partialContext.payload
+    config: partialContext.config || {}
   }
 }
 
@@ -22,7 +18,7 @@ export const ensurePluginFormat = partialPlugin => {
     preview: partialPlugin.preview || (() => {}),
     onEnter: partialPlugin.onEnter || (() => {}),
     onClose: partialPlugin.onClose || (() => {}),
-    payload: partialPlugin.payload
+    config: partialPlugin.config || {}
   }
 }
 

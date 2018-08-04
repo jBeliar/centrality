@@ -114,9 +114,14 @@ class Launcher extends React.Component {
       this.prepareWindowHeight()
     }
 
-    await new Promise(resolve =>
-      this.asyncTimer = setTimeout(() => resolve(fetchList()), this.delay)
-    )
+    if (this.cContext.config.async) {
+      await new Promise(resolve =>
+        this.asyncTimer = setTimeout(() => resolve(fetchList()), this.delay)
+      )
+    } else {
+      await fetchList()
+    }
+
 
   }
 
